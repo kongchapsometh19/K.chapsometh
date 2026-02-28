@@ -1,0 +1,61 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+body {
+  font-family: "Inter", sans-serif;
+}
+
+.dark {
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.float-animation {
+  animation: float 4s ease-in-out infinite;
+}
+/* FLOAT ANIMATION FOR IMAGE */
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+.float {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* SLOW MOVING BACKGROUND */
+@keyframes backgroundMove {
+  0% {
+    transform: translate(0%, 0%);
+  }
+  50% {
+    transform: translate(-10%, -10%);
+  }
+  100% {
+    transform: translate(0%, 0%);
+  }
+}
+.animate-background-move {
+  animation: backgroundMove 60s linear infinite;
+}
