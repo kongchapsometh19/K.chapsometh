@@ -2,60 +2,76 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* 1. Global Smooth Transition */
 body {
   font-family: "Inter", sans-serif;
+  @apply transition-colors duration-1000 ease-in-out;
 }
 
-.dark {
-  color-scheme: dark;
+/* Ensure all background and text color changes are smooth */
+* {
+  transition:
+    background-color 0.7s ease-in-out,
+    color 0.7s ease-in-out,
+    border-color 0.7s ease-in-out;
 }
 
-html {
-  scroll-behavior: smooth;
-}
-@keyframes float {
+/* 2. BUTTER-SMOOTH NAME ANIMATION */
+@keyframes runAndShine {
   0% {
-    transform: translateY(0px);
+    transform: translateX(0px) translateZ(0);
+    background-position: 0% center;
+  }
+  25% {
+    transform: translateX(15px) translateZ(0);
   }
   50% {
-    transform: translateY(-15px);
+    transform: translateX(0px) translateZ(0);
+    background-position: 100% center;
+  }
+  75% {
+    transform: translateX(-15px) translateZ(0);
   }
   100% {
-    transform: translateY(0px);
+    transform: translateX(0px) translateZ(0);
+    background-position: 0% center;
   }
 }
 
-.float-animation {
-  animation: float 4s ease-in-out infinite;
+.animate-run-color {
+  display: inline-block;
+  background: linear-gradient(
+    90deg,
+    #f97316,
+    /* Orange */ #3b82f6,
+    /* Blue */ #ffffff,
+    /* Shine */ #f97316
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  /* Using cubic-bezier for a more professional, fluid feel */
+  animation: runAndShine 6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+
+  /* Hardware Acceleration */
+  will-change: transform, background-position;
+  backface-visibility: hidden;
 }
-/* FLOAT ANIMATION FOR IMAGE */
+
+/* 3. SMOOTH FLOATING FOR IMAGE */
 @keyframes float {
-  0% {
-    transform: translateY(0px);
+  0%,
+  100% {
+    transform: translateY(0px) translateZ(0);
   }
   50% {
-    transform: translateY(-15px);
-  }
-  100% {
-    transform: translateY(0px);
+    transform: translateY(-20px) translateZ(0);
   }
 }
-.float {
+
+.float-box {
   animation: float 6s ease-in-out infinite;
-}
-
-/* SLOW MOVING BACKGROUND */
-@keyframes backgroundMove {
-  0% {
-    transform: translate(0%, 0%);
-  }
-  50% {
-    transform: translate(-10%, -10%);
-  }
-  100% {
-    transform: translate(0%, 0%);
-  }
-}
-.animate-background-move {
-  animation: backgroundMove 60s linear infinite;
+  will-change: transform;
 }

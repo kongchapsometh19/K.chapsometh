@@ -1,179 +1,155 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { Sun, Moon, Menu, X } from "lucide-react"; // Added X
+import { Sun, Moon, Menu, X, Plane, GraduationCap } from "lucide-react";
 import React, { useState } from "react";
 
 const Navbar = ({ darkMode, toggleDarkMode }) => {
   const [activeSection, setActiveSection] = useState("home");
-  const [isMenuOpen, setIsMenuOpen] = useState(false); // Added state
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  // បន្ថែម Aviation ចូលក្នុងបញ្ជីនេះ ដោយមិនប៉ះពាល់កូដផ្សេងទៀត
   const navItems = [
     { name: "Home", link: "#home" },
     { name: "About", link: "#about" },
-    { name: "Skill", link: "#skill" },
-    { name: "Project", link: "#project" },
+    { name: "Academic", link: "#academic" },
+    { name: "Skills", link: "#skill" },
+    { name: "Projects", link: "#project" },
+    { name: "Aviation", link: "#aviation" }, // បានបន្ថែមរួចរាល់
     { name: "Contact", link: "#contact" },
   ];
 
-  const lightcolor = {
-    navBg: "bg-gradient-to-br from-orange-200 to-white",
-    textPrimary: "text-gray-900",
+  const lightTheme = {
+    navBg: "bg-white/70 border-white/40",
+    textPrimary: "text-slate-900",
     textActive: "text-orange-600",
-    secondary: "text-gray-700",
+    secondary: "text-slate-500",
     indicator: "bg-orange-500",
-    button: "from-orange-500 to-amber-500",
   };
 
-  const darkcolor = {
-    navBg: "bg-gradient-to-br from-gray-700 to-black",
+  const darkTheme = {
+    navBg: "bg-slate-900/80 border-slate-700/50",
     textPrimary: "text-white",
     textActive: "text-orange-400",
-    secondary: "text-gray-300",
+    secondary: "text-slate-400",
     indicator: "bg-orange-400",
-    button: "from-orange-500 to-amber-500",
   };
 
-  const colors = darkMode ? darkcolor : lightcolor;
-
-  const handleNavItemClick = (itemname) => {
-    setActiveSection(itemname.toLowerCase());
-    setIsMenuOpen(false); // Close mobile menu on click
-  };
+  const theme = darkMode ? darkTheme : lightTheme;
 
   return (
-    <div className="flex justify-center w-full fixed z-50 mt-4">
+    <div className="fixed top-6 left-0 right-0 z-[100] flex justify-center px-4">
       <motion.nav
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.5 }}
-        className={`flex items-center justify-between ${colors.navBg} backdrop-blur-lg rounded-2xl px-4 lg:px-8 py-2 shadow-lg w-11/12`}
+        initial={{ y: -50, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.6 }}
+        className={`w-full max-w-6xl flex items-center justify-between ${theme.navBg} backdrop-blur-xl border rounded-2xl px-6 py-3 shadow-2xl shadow-black/5`}
       >
-        {/* Logo */}
-        <motion.a
-          href="/"
-          whileHover={{ scale: 1.05 }}
-          className="flex items-center space-x-2"
-        >
-          <span className={`text-xl font-bold ${colors.textPrimary}`}>
-            CHAP-SOMETH<span className="text-orange-500">.</span>
+        {/* Logo Section - បង្ហាញអត្តសញ្ញាណ Dual Degree */}
+        <div className="flex items-center gap-3">
+          <div className="flex -space-x-2">
+            <div
+              className={`w-8 h-8 rounded-lg flex items-center justify-center border-2 ${darkMode ? "bg-orange-500 border-slate-900" : "bg-blue-600 border-white text-white"}`}
+            >
+              <GraduationCap size={16} />
+            </div>
+          </div>
+          <span
+            className={`text-lg font-black tracking-tighter hidden sm:block ${theme.textPrimary}`}
+          >
+            KONG <span className="text-orange-500">CH.</span>
           </span>
-        </motion.a>
+        </div>
 
         {/* Desktop Menu */}
-        <div className="hidden lg:flex items-center space-x-6">
+        <div className="hidden lg:flex items-center gap-6">
           {navItems.map((item) => (
             <a
               key={item.name}
               href={item.link}
-              onClick={() => handleNavItemClick(item.name)}
-              className="relative"
+              onClick={() => setActiveSection(item.name.toLowerCase())}
+              className="relative py-1 group"
             >
-              <motion.span
-                className={`font-medium transition-colors duration-300 ${
+              <span
+                className={`text-[10px] font-black uppercase tracking-[0.25em] transition-colors duration-300 ${
                   activeSection === item.name.toLowerCase()
-                    ? colors.textActive
-                    : `${colors.secondary} hover:text-orange-500`
+                    ? theme.textActive
+                    : `${theme.secondary} group-hover:text-orange-500`
                 }`}
-                whileHover={{ scale: 1.05 }}
               >
                 {item.name}
-              </motion.span>
+              </span>
 
               {activeSection === item.name.toLowerCase() && (
                 <motion.div
-                  layoutId="navbar-indicator"
-                  className={`absolute -bottom-1 left-0 right-0 h-0.5 rounded-full ${colors.indicator}`}
+                  layoutId="nav-underline"
+                  className={`absolute -bottom-1 left-0 right-0 h-[2px] rounded-full ${theme.indicator}`}
+                  transition={{ type: "spring", stiffness: 380, damping: 30 }}
                 />
               )}
             </a>
           ))}
         </div>
 
-        {/* Right Side */}
-        <div className="flex items-center space-x-3">
-          <motion.button
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
+        {/* Right Tools: Dark Mode & Identity */}
+        <div className="flex items-center gap-4">
+          <button
             onClick={toggleDarkMode}
-            className={`p-2 rounded-full transition-colors ${darkMode ? "bg-gray-700" : "bg-gray-200"}`}
-            aria-label={
-              darkMode ? "Switch to light mode" : "Switch to dark mode"
-            }
+            className={`p-2.5 rounded-xl border transition-all duration-500 ${
+              darkMode
+                ? "bg-slate-800 border-slate-700 text-yellow-400 hover:bg-slate-700"
+                : "bg-slate-100 border-slate-200 text-slate-700 hover:bg-slate-200"
+            }`}
           >
-            {darkMode ? (
-              <Sun className="w-5 h-5 text-yellow-300" />
-            ) : (
-              <Moon className="w-5 h-5 text-gray-700" />
-            )}
-          </motion.button>
+            {darkMode ? <Sun size={16} /> : <Moon size={16} />}
+          </button>
 
-          <motion.a
-            href="#contact"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className={`hidden lg:block px-6 py-2 font-semibold rounded-full bg-gradient-to-r ${colors.button} text-white shadow-md hover:shadow-lg transition-shadow`}
-          >
-            Hire Me
-          </motion.a>
-
-          {/* Mobile Menu Button */}
-          <div className="flex lg:hidden items-center space-x-4 px-2">
-            <motion.button
-              whileTap={{ scale: 0.9 }}
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className={`p-2 rounded-lg ${darkMode ? "bg-gray-700" : "bg-gray-200"}`}
+          <div className="hidden md:flex items-center gap-2 border-l pl-4 border-gray-200/50">
+            <div
+              className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest ${darkMode ? "bg-white/5 text-orange-400" : "bg-black/5 text-blue-600"}`}
             >
-              {isMenuOpen ? (
-                <X
-                  className={`w-5 h-5 ${darkMode ? "text-white" : "text-gray-700"}`}
-                />
-              ) : (
-                <Menu
-                  className={`w-5 h-5 ${darkMode ? "text-white" : "text-gray-700"}`}
-                />
-              )}
-            </motion.button>
+              RUPP • NICA
+            </div>
           </div>
+
+          {/* Mobile Menu Toggle */}
+          <button
+            className="lg:hidden p-2 text-gray-500"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
         </div>
 
-        {/* Mobile Dropdown */}
+        {/* Mobile Menu Dropdown */}
         <AnimatePresence>
           {isMenuOpen && (
             <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3 }}
-              className={`absolute top-full left-0 right-0 mt-2 lg:hidden ${
-                darkMode ? "bg-gray-900/95" : "bg-white/95"
-              } backdrop-blur-lg rounded-xl shadow-lg border ${
-                darkMode ? "border-gray-700" : "border-gray-200"
-              }`}
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className={`absolute top-full left-0 right-0 mt-4 p-4 lg:hidden ${
+                darkMode
+                  ? "bg-slate-900 border-slate-700"
+                  : "bg-white border-gray-200"
+              } border rounded-2xl shadow-2xl`}
             >
-              <div className="px-4 py-3 space-y-2">
-                {navItems.map((item) => {
-                  const isActive = activeSection === item.name.toLowerCase();
-                  return (
-                    <a
-                      key={item.name}
-                      href={item.link}
-                      onClick={() => handleNavItemClick(item.name)}
-                      className="block"
-                    >
-                      <motion.div
-                        whileHover={{ x: 5 }}
-                        className={`py-3 px-4 rounded-lg text-center font-medium transition-colors ${
-                          isActive
-                            ? "bg-orange-500 text-white"
-                            : darkMode
-                              ? "text-gray-300 hover:bg-gray-700/50 hover:text-white"
-                              : "text-gray-700 hover:bg-orange-50"
-                        }`}
-                      >
-                        {item.name}
-                      </motion.div>
-                    </a>
-                  );
-                })}
+              <div className="grid grid-cols-2 gap-2">
+                {navItems.map((item) => (
+                  <a
+                    key={item.name}
+                    href={item.link}
+                    onClick={() => {
+                      setActiveSection(item.name.toLowerCase());
+                      setIsMenuOpen(false);
+                    }}
+                    className={`py-4 px-4 rounded-xl text-center text-[10px] font-black uppercase tracking-widest transition-all ${
+                      activeSection === item.name.toLowerCase()
+                        ? "bg-orange-500 text-white"
+                        : `${darkMode ? "bg-white/5 text-slate-400" : "bg-slate-50 text-slate-600"}`
+                    }`}
+                  >
+                    {item.name}
+                  </a>
+                ))}
               </div>
             </motion.div>
           )}
