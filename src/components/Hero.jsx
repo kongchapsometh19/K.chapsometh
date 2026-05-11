@@ -47,15 +47,15 @@ const Hero = ({ darkMode, toggleDarkMode }) => {
           data-aos="fade-left"
         >
           {/* Box Container - កែសម្រួលទំហំឱ្យសមស្របតាម Mobile */}
-          <div className="w-64 h-80 md:w-full md:max-w-[420px] md:h-[500px] rounded-[40px] md:rounded-[60px] overflow-hidden shadow-2xl relative group border-4 border-white/10 z-10">
+          <div className="w-64 h-80 md:w-full md:max-w-105 md:h-125 rounded-[40px] md:rounded-[60px] overflow-hidden shadow-2xl relative group border-4 border-white/10 z-10">
             <img
               src="/portfolio.jpg"
               alt="Kong Chapsometh"
-              className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000 ease-in-out scale-110 group-hover:scale-100"
+              className="w-full h-full object-cover  hover:grayscale-0 transition-all duration-1000 ease-in-out scale-110 group-hover:scale-100"
             />
             {/* Overlay gradient */}
             <div
-              className={`absolute inset-0 bg-gradient-to-t transition-opacity duration-500 ${
+              className={`absolute inset-0 bg-linear-to-t transition-opacity duration-500 ${
                 darkMode
                   ? "from-black/60 via-transparent"
                   : "from-black/20 via-transparent"
